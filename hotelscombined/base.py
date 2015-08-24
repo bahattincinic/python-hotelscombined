@@ -61,4 +61,4 @@ class BaseApi(object):
                                  errors=response.content,
                                  status_code=response.status_code)
 
-        return json.load(response.content)
+        return json.loads(response.content)
