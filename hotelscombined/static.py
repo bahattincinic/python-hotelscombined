@@ -1,10 +1,10 @@
-from base import BaseAPi
+from base import BaseApi
 
 
-class StaticSearch(BaseAPi):
+class StaticSearch(BaseApi):
     """
     The static search finds places and hotels without dates.
-    This is the equivalent of the website’s universal search.
+    This is the equivalent of the websites universal search.
     """
 
     def search(self, query, *args, **kwargs):

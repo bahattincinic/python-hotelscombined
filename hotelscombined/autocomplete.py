@@ -1,7 +1,7 @@
-from base import BaseAPi
+from base import BaseApi
 
 
-class AutocompleteSearch(BaseAPi):
+class AutocompleteSearch(BaseApi):
     """
     Searches for places that might match the string being searched,
     this method is intended for used for

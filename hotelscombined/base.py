@@ -9,7 +9,7 @@ except:
 from .exceptions import QueryException
 
 
-class BaseAPi(object):
+class BaseApi(object):
     token = ""
     version = ""
     debug = False

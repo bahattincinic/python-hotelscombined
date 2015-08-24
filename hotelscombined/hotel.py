@@ -1,7 +1,7 @@
-from base import BaseAPi
+from base import BaseApi
 
 
-class HotelSearch(BaseAPi):
+class HotelSearch(BaseApi):
     """
     The hotel search returns rates and availability for hotels
     matching the criteria.
@@ -84,14 +84,21 @@ class HotelSearch(BaseAPi):
 
         return self.__perform_request(url='hotel', params=params)
 
+    def __int_or_default(self, value, default):
+        try:
+            value = abs(int(value))
+        except (ValueError, TypeError):
+            value = default
+        return value
+
     def __build_query(self, query, **kwargs):
         # the default is 25
-        query['pageSize'] = kwargs.pop('limit', 25)
+        query['pageSize'] = self.__int_or_default(kwargs.pop('limit'), 25)
         # the default is 0
-        query['pageIndex'] = kwargs.pop('page', 1) - 1
+        query['pageIndex'] = self.__int_or_default(kwargs.pop('page'), 0)
 
         # The default is popularity.
-        order_by = kwargs.pop('order_by', '-popularity')
+        order_by = kwargs.pop('order_by') or '-popularity'
         if order_by.startswith('-'):
             query['sortDirection'] = 'descending'
             query['SortField'] = order_by.split('-')[1]
