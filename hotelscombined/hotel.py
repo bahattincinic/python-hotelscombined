@@ -13,7 +13,11 @@ class HotelSearch(BaseAPi):
         The multiple hotel search returns summary details and rates
         for hotels within a place.
 
-        :param destination (Example: place:Istanbul)
+        :param destination str  (Example: place:Istanbul)
+        :param order_by str (consumerRating, distance, name, minRate,
+                             popularity, rating)
+        :param page int (default 1)
+        :param limit int (default 25)
         """
         params = {'destination': destination}
         params = self.__build_query(params, order_by=order_by, page=page,
@@ -28,6 +32,10 @@ class HotelSearch(BaseAPi):
         and rates for hotels within a place.
 
         :param destination (Example: place:Istanbul)
+        :param order_by str (consumerRating, distance, name, minRate,
+                             popularity, rating)
+        :param page int (default 1)
+        :param limit int (default 25)
         """
         params = {'destination': destination}
         params = self.__build_query(params, order_by=order_by, page=page,
@@ -45,6 +53,10 @@ class HotelSearch(BaseAPi):
         until they have applied all the filters they wish to.
 
         :param destination (Example: place:Istanbul)
+        :param order_by str (consumerRating, distance, name, minRate,
+                             popularity, rating)
+        :param page int (default 1)
+        :param limit int (default 25)
         """
         params = {'destination': destination}
         params = self.__build_query(params, order_by=order_by, page=page,
@@ -61,6 +73,10 @@ class HotelSearch(BaseAPi):
         results of the multiple hotel search.
 
         :param hotel (Example: hotel:Hotel_Sapphire_Istanbul)
+        :param order_by str (consumerRating, distance, name, minRate,
+                             popularity, rating)
+        :param page int (default 1)
+        :param limit int (default 25)
         """
         params = {'hotel': hotel}
         params = self.__build_query(params, order_by=order_by, page=page,
@@ -68,22 +84,20 @@ class HotelSearch(BaseAPi):
 
         return self.__perform_request(url='hotel', params=params)
 
-    def __build_query(self, query, limit=None, page=None, order_by=None,
-                      **kwargs):
-        if kwargs:
-            query.update(kwargs)
+    def __build_query(self, query, **kwargs):
+        # the default is 25
+        query['pageSize'] = kwargs.pop('limit', 25)
+        # the default is 0
+        query['pageIndex'] = kwargs.pop('page', 1) - 1
 
-        if limit and isinstance(page, int):
-            query['pageSize'] = limit
+        # The default is popularity.
+        order_by = kwargs.pop('order_by', '-popularity')
+        if order_by.startswith('-'):
+            query['sortDirection'] = 'descending'
+            query['SortField'] = order_by.split('-')[1]
+        else:
+            query['sortDirection'] = 'ascending'
+            query['SortField'] = order_by
 
-        if page and isinstance(page, int):
-            query['pageIndex'] = page - 1
-
-        if order_by and isinstance(page, str):
-            if order_by.startswith('-'):
-                query['sortDirection'] = 'descending'
-                query['SortField'] = order_by.split('-')[1]
-            else:
-                query['sortDirection'] = 'ascending'
-                query['SortField'] = order_by
+        query.update(kwargs)
         return query

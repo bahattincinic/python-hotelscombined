@@ -6,7 +6,7 @@ try:
 except:
     from urllib.parse import urljoin
 
-from .exceptions import TokenException, QueryException
+from .exceptions import QueryException
 
 
 class BaseAPi(object):
@@ -35,10 +35,7 @@ class BaseAPi(object):
 
     def __perform_request(self, url, params, method='GET'):
         if not self.token:
-            raise TokenException("No token provided. Please use a valid token")
-
-        if not isinstance(params, dict):
-            raise QueryException("invalid params.")
+            raise QueryException("No token provided. Please use a valid token")
 
         payload = {'apiKey': self.token}
         payload.update(params)
@@ -49,12 +46,19 @@ class BaseAPi(object):
         response = requests.request(method, url, params=payload,
                                     headers=headers)
 
-        if response.status_code == 401:
-            raise TokenException("Please use a valid token",
-                                 errors=response.content)
+        errors = {
+            '400': 'The query is not valid (e.g. check-in after check-out.)',
+            '401': 'The API key is invalid or the User Agent is empty.',
+            '403': 'The user is banned.',
+            '404': 'The requested place is not searchable or unknown to '
+                   'the system, or the request path is not recognized '
+                   'as part of the API.',
+            '500': 'Any other error.'
+        }
 
-        if response.status_code in (400, 404):
-            raise QueryException("The query/url is not valid",
-                                 errors=response.content)
+        if str(response.status_code) in errors.keys():
+            raise QueryException(errors[str(response.status_code)],
+                                 errors=response.content,
+                                 status_code=response.status_code)
 
         return json.load(response.content)
