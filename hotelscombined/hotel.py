@@ -3,8 +3,8 @@ from base import BaseAPi
 
 class HotelSearch(BaseAPi):
     """
-    The static search finds places and hotels without dates.
-    This is the equivalent of the website’s universal search.
+    The hotel search returns rates and availability for hotels
+    matching the criteria.
     """
 
     def destination_search(self, destination, order_by=None, page=None,

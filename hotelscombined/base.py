@@ -13,7 +13,7 @@ class BaseAPi(object):
     token = ""
     version = ""
     debug = False
-    live_api_root = "http://hotelscombined.com/api/"
+    live_api_root = "https://hotelscombined.com/api/"
     sandbox_api_root = "http://sandbox.hotelscombined.com/api/"
 
     def __init__(self, token, version='1.0', debug=False, *args, **kwargs):
