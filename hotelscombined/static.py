@@ -11,4 +11,4 @@ class StaticSearch(BaseApi):
         params = {'query': query}
         if kwargs:
             params.update(kwargs)
-        return self.__perform_request(url='search/full', params=params)
+        return self._perform_request(url='search/full', params=params)

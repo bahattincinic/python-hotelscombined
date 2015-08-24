@@ -9,11 +9,11 @@ class AutocompleteSearch(BaseApi):
     """
 
     @property
-    def __api_endpoint(self):
+    def _api_endpoint(self):
         return 'http://www.hotelscombined.com/'
 
     def suggest(self, query, *args, **kwargs):
         params = {'query': query}
         if kwargs:
             params.update(kwargs)
-        return self.__perform_request(url='AutoUniversal.ashx', params=params)
+        return self._perform_request(url='AutoUniversal.ashx', params=params)

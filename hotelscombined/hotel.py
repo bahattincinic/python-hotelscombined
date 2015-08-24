@@ -20,10 +20,10 @@ class HotelSearch(BaseApi):
         :param limit int (default 25)
         """
         params = {'destination': destination}
-        params = self.__build_query(params, order_by=order_by, page=page,
-                                    limit=limit, **kwargs)
+        params = self._build_query(params, order_by=order_by, page=page,
+                                   limit=limit, **kwargs)
 
-        return self.__perform_request(url='hotels', params=params)
+        return self._perform_request(url='hotels', params=params)
 
     def basic_destination_search(self, destination, order_by=None, page=None,
                                  limit=None, *args, **kwargs):
@@ -38,10 +38,10 @@ class HotelSearch(BaseApi):
         :param limit int (default 25)
         """
         params = {'destination': destination}
-        params = self.__build_query(params, order_by=order_by, page=page,
-                                    limit=limit, **kwargs)
+        params = self._build_query(params, order_by=order_by, page=page,
+                                   limit=limit, **kwargs)
 
-        return self.__perform_request(url='hotels/basic', params=params)
+        return self._perform_request(url='hotels/basic', params=params)
 
     def destination_search_summary(self, destination, order_by=None, page=None,
                                    limit=None, *args, **kwargs):
@@ -59,10 +59,10 @@ class HotelSearch(BaseApi):
         :param limit int (default 25)
         """
         params = {'destination': destination}
-        params = self.__build_query(params, order_by=order_by, page=page,
-                                    limit=limit, **kwargs)
+        params = self._build_query(params, order_by=order_by, page=page,
+                                   limit=limit, **kwargs)
 
-        return self.__perform_request(url='hotels/summary', params=params)
+        return self._perform_request(url='hotels/summary', params=params)
 
     def single_search(self, hotel, order_by=None, page=None, limit=None,
                       *args, **kwargs):
@@ -79,23 +79,23 @@ class HotelSearch(BaseApi):
         :param limit int (default 25)
         """
         params = {'hotel': hotel}
-        params = self.__build_query(params, order_by=order_by, page=page,
-                                    limit=limit, **kwargs)
+        params = self._build_query(params, order_by=order_by, page=page,
+                                   limit=limit, **kwargs)
 
-        return self.__perform_request(url='hotel', params=params)
+        return self._perform_request(url='hotel', params=params)
 
-    def __int_or_default(self, value, default):
+    def _int_or_default(self, value, default):
         try:
             value = abs(int(value))
         except (ValueError, TypeError):
             value = default
         return value
 
-    def __build_query(self, query, **kwargs):
+    def _build_query(self, query, **kwargs):
         # the default is 25
-        query['pageSize'] = self.__int_or_default(kwargs.pop('limit'), 25)
+        query['pageSize'] = self._int_or_default(kwargs.pop('limit'), 25)
         # the default is 0
-        query['pageIndex'] = self.__int_or_default(kwargs.pop('page'), 0)
+        query['pageIndex'] = self._int_or_default(kwargs.pop('page'), 0)
 
         # The default is popularity.
         order_by = kwargs.pop('order_by') or '-popularity'

@@ -28,19 +28,19 @@ class BaseApi(object):
         return u"%s" % self.__str__()
 
     @property
-    def __api_endpoint(self):
+    def _api_endpoint(self):
         if self.debug:
             return urljoin(self.sandbox_api_root, self.version)
         return urljoin(self.live_api_root, self.version)
 
-    def __perform_request(self, url, params, method='GET'):
+    def _perform_request(self, url, params, method='GET'):
         if not self.token:
             raise QueryException("No token provided. Please use a valid token")
 
         payload = {'apiKey': self.token}
         payload.update(params)
 
-        url = urljoin(self.__api_endpoint(), url)
+        url = urljoin(self._api_endpoint, url)
         headers = {'Content-type': 'application/json',
                    'Accept': 'application/json'}
         response = requests.request(method, url, params=payload,
