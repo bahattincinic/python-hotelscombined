@@ -10,7 +10,7 @@ class AutocompleteSearch(BaseApi):
 
     @property
     def _api_endpoint(self):
-        return 'http://www.hotelscombined.com/'
+        return 'http://www.hotelscombined.com'
 
     def suggest(self, query, *args, **kwargs):
         params = {'search': query}

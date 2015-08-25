@@ -6,7 +6,7 @@ Python Client for Hotels Combined
 
 Installation
 -------------
-    pip install python-hotelscombined
+    $ pip install python-hotelscombined
 
 
 Features
@@ -15,5 +15,9 @@ Features
 * Static Search
 * Autocomplete Search
 * Multible Hotel Search
-* Basic Multible Hotel Search
 * Single Hotel Search
+
+
+To run the tests
+-------------
+    $ nosetests hotels_combined

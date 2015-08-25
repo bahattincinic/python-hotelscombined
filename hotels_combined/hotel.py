@@ -18,7 +18,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
-        :param page int (default 1)
+        :param page int (default 0)
         :param limit int (default 25)
         """
         params = {'destination': destination, 'sessionID': session_id}
@@ -38,7 +38,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
-        :param page int (default 1)
+        :param page int (default 0)
         :param limit int (default 25)
         """
         params = {'destination': destination, 'sessionID': session_id}
@@ -61,7 +61,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
-        :param page int (default 1)
+        :param page int (default 0)
         :param limit int (default 25)
         """
         params = {'destination': destination, 'sessionID': session_id}
@@ -82,7 +82,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
-        :param page int (default 1)
+        :param page int (default 0)
         :param limit int (default 25)
         """
         params = {'hotel': hotel, 'sessionID': session_id}
@@ -100,12 +100,12 @@ class HotelSearch(BaseApi):
 
     def _build_query(self, query, **kwargs):
         # the default is 25
-        query['pageSize'] = self._int_or_default(kwargs.pop('limit'), 25)
+        query['pageSize'] = self._int_or_default(kwargs.pop('limit', 25), 25)
         # the default is 0
-        query['pageIndex'] = self._int_or_default(kwargs.pop('page'), 0)
+        query['pageIndex'] = self._int_or_default(kwargs.pop('page', 0), 0)
 
         # The default is popularity.
-        order_by = kwargs.pop('order_by') or '-popularity'
+        order_by = kwargs.pop('order_by', '-popularity') or '-popularity'
         if order_by.startswith('-'):
             query['sortDirection'] = 'descending'
             query['SortField'] = order_by.split('-')[1]
