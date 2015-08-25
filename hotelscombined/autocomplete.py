@@ -13,7 +13,7 @@ class AutocompleteSearch(BaseApi):
         return 'http://www.hotelscombined.com/'
 
     def suggest(self, query, *args, **kwargs):
-        params = {'query': query}
+        params = {'search': query}
         if kwargs:
             params.update(kwargs)
         return self._perform_request(url='AutoUniversal.ashx', params=params)
