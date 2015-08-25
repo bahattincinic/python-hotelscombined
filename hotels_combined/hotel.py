@@ -7,43 +7,48 @@ class HotelSearch(BaseApi):
     matching the criteria.
     """
 
-    def destination_search(self, destination, order_by=None, page=None,
+    def destination_search(self, destination, session_id,
+                           order_by=None, page=None,
                            limit=None, *args, **kwargs):
         """
         The multiple hotel search returns summary details and rates
         for hotels within a place.
 
         :param destination str  (Example: place:Istanbul)
+        :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
         :param page int (default 1)
         :param limit int (default 25)
         """
-        params = {'destination': destination}
+        params = {'destination': destination, 'sessionID': session_id}
         params = self._build_query(params, order_by=order_by, page=page,
                                    limit=limit, **kwargs)
 
         return self._perform_request(url='hotels', params=params)
 
-    def basic_destination_search(self, destination, order_by=None, page=None,
+    def basic_destination_search(self, destination, session_id,
+                                 order_by=None, page=None,
                                  limit=None, *args, **kwargs):
         """
         The basic multiple hotel search returns very basic summary details
         and rates for hotels within a place.
 
         :param destination (Example: place:Istanbul)
+        :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
         :param page int (default 1)
         :param limit int (default 25)
         """
-        params = {'destination': destination}
+        params = {'destination': destination, 'sessionID': session_id}
         params = self._build_query(params, order_by=order_by, page=page,
                                    limit=limit, **kwargs)
 
         return self._perform_request(url='hotels/basic', params=params)
 
-    def destination_search_summary(self, destination, order_by=None, page=None,
+    def destination_search_summary(self, destination, session_id,
+                                   order_by=None, page=None,
                                    limit=None, *args, **kwargs):
         """
         The multiple hotel search summary returns the metadata portion of the
@@ -53,19 +58,20 @@ class HotelSearch(BaseApi):
         until they have applied all the filters they wish to.
 
         :param destination (Example: place:Istanbul)
+        :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
         :param page int (default 1)
         :param limit int (default 25)
         """
-        params = {'destination': destination}
+        params = {'destination': destination, 'sessionID': session_id}
         params = self._build_query(params, order_by=order_by, page=page,
                                    limit=limit, **kwargs)
 
         return self._perform_request(url='hotels/summary', params=params)
 
-    def single_search(self, hotel, order_by=None, page=None, limit=None,
-                      *args, **kwargs):
+    def single_search(self, hotel, session_id, order_by=None,
+                      page=None, limit=None, *args, **kwargs):
         """
         The single hotel search returns the full details for a single hotel
         and all available rates for the given criteria. This would
@@ -73,12 +79,13 @@ class HotelSearch(BaseApi):
         results of the multiple hotel search.
 
         :param hotel (Example: hotel:Hotel_Sapphire_Istanbul)
+        :param session_id str
         :param order_by str (consumerRating, distance, name, minRate,
                              popularity, rating)
         :param page int (default 1)
         :param limit int (default 25)
         """
-        params = {'hotel': hotel}
+        params = {'hotel': hotel, 'sessionID': session_id}
         params = self._build_query(params, order_by=order_by, page=page,
                                    limit=limit, **kwargs)
 
