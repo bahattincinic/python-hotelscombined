@@ -40,7 +40,7 @@ class BaseApi(object):
         payload = {'apiKey': self.token}
         payload.update(params)
 
-        url = urljoin(self._api_endpoint, url)
+        url = '%s/%s' % (self._api_endpoint, url)
         headers = {'Content-type': 'application/json',
                    'Accept': 'application/json'}
         response = requests.request(method, url, params=payload,
