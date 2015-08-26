@@ -165,36 +165,6 @@ class HotelSearchTestCase(unittest.TestCase):
     def setUp(self):
         self.instance = HotelSearch(token='123456', debug=True)
 
-    def _assertQuerystring(self, querstring, limit=None, page=None, **kwargs):
-        self.assertEqual(querstring['pageSize'], [limit or '25'])
-        self.assertEqual(querstring['pageIndex'], [page or '0'])
-        self.assertEqual(querstring['sortDirection'], ['descending'])
-        self.assertEqual(querstring['SortField'], ['popularity'])
-        self.assertEqual(querstring['apiKey'], [self.instance.token])
-        for key, val in kwargs.items():
-            self.assertEqual(querstring[key], [val])
-
-    def test_int_or_default(self):
-        self.assertEqual(self.instance._int_or_default('dfd', 1), 1)
-        self.assertEqual(self.instance._int_or_default(2, 1), 2)
-        self.assertEqual(self.instance._int_or_default('2/', 1), 1)
-        self.assertEqual(self.instance._int_or_default('-2', 1), 2)
-
-    def test_default_build_query(self):
-        query = self.instance._build_query(query={})
-        self.assertEqual(query['pageSize'], 25)
-        self.assertEqual(query['pageIndex'], 0)
-        self.assertEqual(query['sortDirection'], 'descending')
-        self.assertEqual(query['SortField'], 'popularity')
-
-    def test_build_query(self):
-        query = self.instance._build_query(query={}, limit=20, page=1,
-                                           order_by='-id')
-        self.assertEqual(query['pageSize'], 20)
-        self.assertEqual(query['pageIndex'], 1)
-        self.assertEqual(query['sortDirection'], 'descending')
-        self.assertEqual(query['SortField'], 'id')
-
     @httpretty.activate
     def test_destination_search(self):
         url = self.instance._api_endpoint + '/hotels?(\w+)'
@@ -211,11 +181,14 @@ class HotelSearchTestCase(unittest.TestCase):
             1
         )
         self.assertEqual(
-            self.instance.destination_search('istanbul', 'fdfdf', page=2)[0],
+            self.instance.destination_search(
+                'istanbul', 'fdfdf', pageSize=2)[0],
             {"id": "place:Istanbul"}
         )
-        self._assertQuerystring(httpretty.last_request().querystring,
-                                destination='istanbul', page='2')
+
+        querystring = httpretty.last_request().querystring
+        self.assertEqual(querystring['destination'], ['istanbul'])
+        self.assertEqual(querystring['pageSize'], ['2'])
 
     @httpretty.activate
     def test_basic_destination_search(self):
@@ -236,8 +209,9 @@ class HotelSearchTestCase(unittest.TestCase):
             self.instance.basic_destination_search('ankara', 'fdfdf')[0],
             {"name": "place:Ankara"}
         )
-        self._assertQuerystring(httpretty.last_request().querystring,
-                                destination='ankara')
+
+        querystring = httpretty.last_request().querystring
+        self.assertEqual(querystring['destination'], ['ankara'])
 
     @httpretty.activate
     def test_destination_search_summary(self):
@@ -253,10 +227,13 @@ class HotelSearchTestCase(unittest.TestCase):
         )
         result = self.instance.destination_search_summary(
             'ankara', 'fdfdf', languageCode='TR')
+
         self.assertTrue(isinstance(result, dict))
         self.assertEqual(len(result.keys()), 4)
-        self._assertQuerystring(httpretty.last_request().querystring,
-                                destination='ankara', languageCode='TR')
+
+        querystring = httpretty.last_request().querystring
+        self.assertEqual(querystring['destination'], ['ankara'])
+        self.assertEqual(querystring['languageCode'], ['TR'])
 
     @httpretty.activate
     def test_single_search(self):
@@ -271,7 +248,11 @@ class HotelSearchTestCase(unittest.TestCase):
         )
         result = self.instance.single_search(
             'four seasons hotel', 'fdfdf', languageCode='EN')
+
         self.assertTrue(isinstance(result, dict))
         self.assertEqual(len(result.keys()), 1)
-        self._assertQuerystring(httpretty.last_request().querystring,
-                                hotel='four seasons hotel', languageCode='EN')
+
+        querystring = httpretty.last_request().querystring
+        self.assertEqual(querystring['hotel'], ['four seasons hotel'])
+        self.assertEqual(querystring['sessionID'], ['fdfdf'])
+        self.assertEqual(querystring['languageCode'], ['EN'])

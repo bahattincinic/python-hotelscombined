@@ -30,7 +30,8 @@ or via sources:
 
     $ nosetests hotels_combined
 
-## Examples
+
+## Usage
 
 ### Autocomplete Search
 
@@ -80,3 +81,16 @@ or via sources:
     instance = HotelSearch(token='<TOKEN>', debug=True)
     instance.single_search(hotel='hotel:Hotel_Sapphire_Istanbul',
                            session_id='1235', languaceCode='TR', room=1)
+
+
+## HTTP Response Codes
+
+|       Response Code       |                                                                                                                              Description                                                                                                                             |
+|:-------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|           200 OK          |                                                                                     Valid query and response. Note: the answer for a valid query may still contain zero results.                                                                                     |
+|        202 Accepted       | Valid query but response is still being processed by the server. This response is returned for queries, such as hotel searches, when the client requests only a complete query results. See the individual API methods for cases when this response may be provided. |
+|      400 Bad Request      |                                                                                                        The query is not valid (e.g. check-in after check-out.)                                                                                                       |
+| 401 Unauthorized          | The API key is invalid or the User Agent is empty.                                                                                                                                                                                                                   |
+| 403 Forbidden             | The user is banned.                                                                                                                                                                                                                                                  |
+| 404 Not Found             | The requested place is not searchable or unknown to the system, or the request path is not recognized as part of the API.                                                                                                                                            |
+| 500 Internal Server Error | Any other error.                                                                                                                                                                                                                                                     |
