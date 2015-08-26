@@ -11,9 +11,6 @@ from .exceptions import QueryException
 
 
 class BaseApi(object):
-    token = ""
-    version = ""
-    debug = False
     live_api_root = "https://hotelscombined.com/api/"
     sandbox_api_root = "http://sandbox.hotelscombined.com/api/"
 
