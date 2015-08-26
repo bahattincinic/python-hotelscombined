@@ -9,6 +9,5 @@ class StaticSearch(BaseApi):
 
     def search(self, query, *args, **kwargs):
         params = {'query': query}
-        if kwargs:
-            params.update(kwargs)
+        params.update(self._underscore_to_camelcase(kwargs))
         return self._perform_request(url='search/full', params=params)

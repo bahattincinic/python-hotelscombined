@@ -1,5 +1,3 @@
-import re
-
 from base import BaseApi
 
 
@@ -8,21 +6,6 @@ class HotelSearch(BaseApi):
     The hotel search returns rates and availability for hotels
     matching the criteria.
     """
-
-    def _to_camelcase(self, value):
-        return re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), value)
-
-    def _underscore_to_camelcase(self, context):
-        """
-        Convert underscore to CamelCase.
-
-        For example:
-            >>> {'language_code': 'TR'} ==> {'languageCode': 'TR'}
-        """
-        return {
-            self._to_camelcase(key): val
-            for key, val in context.items()
-        }
 
     def destination_search(self, destination, session_id, *args, **kwargs):
         """

@@ -27,11 +27,11 @@ class BaseApiTestCase(unittest.TestCase):
     def test_api_endpoint(self):
         instance = BaseApi(token='123456', version='2.0', debug=False)
         live_url = '%s2.0' % instance.live_api_root
-        self.assertEqual(instance._api_endpoint, live_url)
+        self.assertEqual(instance.api_endpoint, live_url)
 
         instance = BaseApi(token='123456', version='2.0', debug=True)
         sandbox_url = '%s2.0' % instance.sandbox_api_root
-        self.assertEqual(instance._api_endpoint, sandbox_url)
+        self.assertEqual(instance.api_endpoint, sandbox_url)
 
     @httpretty.activate
     def test_perform_request(self):
@@ -104,8 +104,8 @@ class AutocompleteSearchTestCase(unittest.TestCase):
                          {'search': ['istanbul'], 'apiKey': ['123456'],
                           'limit': ['5'], 'languageCode': ['EN']})
 
-    def test_api_endpoint(self):
-        self.assertEqual(self.instance._api_endpoint,
+    def testapi_endpoint(self):
+        self.assertEqual(self.instance.api_endpoint,
                          'http://www.hotelscombined.com')
 
 
@@ -118,7 +118,7 @@ class StaticSearchTestCase(unittest.TestCase):
                           "placeName": "Turkey",
                           "hotelCount": 3592,
                           "isSearchable": "true"}]
-        self.url = self.instance._api_endpoint + '/search/full?(\w+)'
+        self.url = self.instance.api_endpoint + '/search/full?(\w+)'
 
     @httpretty.activate
     def test_search(self):
@@ -184,7 +184,7 @@ class HotelSearchTestCase(unittest.TestCase):
 
     @httpretty.activate
     def test_destination_search(self):
-        url = self.instance._api_endpoint + '/hotels?(\w+)'
+        url = self.instance.api_endpoint + '/hotels?(\w+)'
         response = [{"id": "place:Istanbul"}]
         httpretty.register_uri(
             httpretty.GET,
@@ -209,7 +209,7 @@ class HotelSearchTestCase(unittest.TestCase):
 
     @httpretty.activate
     def test_basic_destination_search(self):
-        url = self.instance._api_endpoint + '/hotels/basic?(\w+)'
+        url = self.instance.api_endpoint + '/hotels/basic?(\w+)'
         response = [{"name": "place:Ankara"}]
         httpretty.register_uri(
             httpretty.GET,
@@ -232,7 +232,7 @@ class HotelSearchTestCase(unittest.TestCase):
 
     @httpretty.activate
     def test_destination_search_summary(self):
-        url = self.instance._api_endpoint + '/hotels/summary?(\w+)'
+        url = self.instance.api_endpoint + '/hotels/summary?(\w+)'
         response = {"totalResults": 3591, "totalFilteredResults": 0,
                     "currencyCode": "TRY", "languageCode": "EN"}
         httpretty.register_uri(
@@ -254,7 +254,7 @@ class HotelSearchTestCase(unittest.TestCase):
 
     @httpretty.activate
     def test_single_search(self):
-        url = self.instance._api_endpoint + '/hotel?(\w+)'
+        url = self.instance.api_endpoint + '/hotel?(\w+)'
         response = {"name": "place:Ankara"}
         httpretty.register_uri(
             httpretty.GET,

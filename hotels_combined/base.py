@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
+import re
 try:
     from urlparse import urljoin
 except:
@@ -28,7 +29,7 @@ class BaseApi(object):
         return u"%s" % self.__str__()
 
     @property
-    def _api_endpoint(self):
+    def api_endpoint(self):
         if self.debug:
             return urljoin(self.sandbox_api_root, self.version)
         return urljoin(self.live_api_root, self.version)
@@ -40,7 +41,7 @@ class BaseApi(object):
         payload = {'apiKey': self.token}
         payload.update(params)
 
-        url = '%s/%s' % (self._api_endpoint, url)
+        url = '%s/%s' % (self.api_endpoint, url)
         headers = {'Content-type': 'application/json',
                    'Accept': 'application/json'}
         response = requests.request(method, url, params=payload,
@@ -62,3 +63,18 @@ class BaseApi(object):
                                  status_code=response.status_code)
 
         return json.loads(response.content)
+
+    def _to_camelcase(self, value):
+        return re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), value)
+
+    def _underscore_to_camelcase(self, context):
+        """
+        Convert underscore to CamelCase.
+
+        For example:
+            >>> {'language_code': 'TR'} ==> {'languageCode': 'TR'}
+        """
+        return {
+            self._to_camelcase(key): val
+            for key, val in context.items()
+        }
