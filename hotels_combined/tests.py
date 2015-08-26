@@ -165,6 +165,23 @@ class HotelSearchTestCase(unittest.TestCase):
     def setUp(self):
         self.instance = HotelSearch(token='123456', debug=True)
 
+    def test_to_camelcase(self):
+        self.assertEqual(self.instance._to_camelcase('language_code'),
+                         'languageCode')
+        self.assertEqual(self.instance._to_camelcase('min_price'),
+                         'minPrice')
+        self.assertEqual(self.instance._to_camelcase('checkin'),
+                         'checkin')
+        self.assertEqual(self.instance._to_camelcase(
+            'include_local_taxes_in_total'), 'includeLocalTaxesInTotal')
+
+    def test_underscore_to_camelcase(self):
+        self.assertEqual(self.instance._underscore_to_camelcase(
+            {'language_code': 'TR'}), {'languageCode': 'TR'})
+        self.assertEqual(self.instance._underscore_to_camelcase(
+            {'language_code': 'TR', 'checkin': '323'}),
+            {'languageCode': 'TR', 'checkin': '323'})
+
     @httpretty.activate
     def test_destination_search(self):
         url = self.instance._api_endpoint + '/hotels?(\w+)'
@@ -182,7 +199,7 @@ class HotelSearchTestCase(unittest.TestCase):
         )
         self.assertEqual(
             self.instance.destination_search(
-                'istanbul', 'fdfdf', pageSize=2)[0],
+                'istanbul', 'fdfdf', page_size=2)[0],
             {"id": "place:Istanbul"}
         )
 
@@ -226,7 +243,7 @@ class HotelSearchTestCase(unittest.TestCase):
             status=200
         )
         result = self.instance.destination_search_summary(
-            'ankara', 'fdfdf', languageCode='TR')
+            'ankara', 'fdfdf', language_code='TR')
 
         self.assertTrue(isinstance(result, dict))
         self.assertEqual(len(result.keys()), 4)
@@ -247,7 +264,7 @@ class HotelSearchTestCase(unittest.TestCase):
             status=200
         )
         result = self.instance.single_search(
-            'four seasons hotel', 'fdfdf', languageCode='EN')
+            'four seasons hotel', 'fdfdf', language_code='EN')
 
         self.assertTrue(isinstance(result, dict))
         self.assertEqual(len(result.keys()), 1)

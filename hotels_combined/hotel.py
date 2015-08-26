@@ -1,3 +1,5 @@
+import re
+
 from base import BaseApi
 
 
@@ -6,6 +8,21 @@ class HotelSearch(BaseApi):
     The hotel search returns rates and availability for hotels
     matching the criteria.
     """
+
+    def _to_camelcase(self, value):
+        return re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), value)
+
+    def _underscore_to_camelcase(self, context):
+        """
+        Convert underscore to CamelCase.
+
+        For example:
+            >>> {'language_code': 'TR'} ==> {'languageCode': 'TR'}
+        """
+        return {
+            self._to_camelcase(key): val
+            for key, val in context.items()
+        }
 
     def destination_search(self, destination, session_id, *args, **kwargs):
         """
@@ -16,7 +33,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         """
         params = {'destination': destination, 'sessionID': session_id}
-        params.update(kwargs)
+        params.update(self._underscore_to_camelcase(kwargs))
         return self._perform_request(url='hotels', params=params)
 
     def basic_destination_search(self, destination, session_id,
@@ -29,7 +46,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         """
         params = {'destination': destination, 'sessionID': session_id}
-        params.update(kwargs)
+        params.update(self._underscore_to_camelcase(kwargs))
         return self._perform_request(url='hotels/basic', params=params)
 
     def destination_search_summary(self, destination, session_id,
@@ -45,7 +62,7 @@ class HotelSearch(BaseApi):
         :param session_id str
         """
         params = {'destination': destination, 'sessionID': session_id}
-        params.update(kwargs)
+        params.update(self._underscore_to_camelcase(kwargs))
         return self._perform_request(url='hotels/summary', params=params)
 
     def single_search(self, hotel, session_id, *args, **kwargs):
@@ -59,5 +76,5 @@ class HotelSearch(BaseApi):
         :param session_id str
         """
         params = {'hotel': hotel, 'sessionID': session_id}
-        params.update(kwargs)
+        params.update(self._underscore_to_camelcase(kwargs))
         return self._perform_request(url='hotel', params=params)

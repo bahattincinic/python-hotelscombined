@@ -53,7 +53,7 @@ or via sources:
 
     instance = HotelSearch(token='<TOKEN>', debug=True)
     instance.destination_search(destination='Place:Istanbul', session_id='1235',
-                                languaceCode='TR', room=1)
+                                language_code='TR', room=1)
 
 ## Basic Multible Hotel Search
 
@@ -62,7 +62,7 @@ or via sources:
     instance = HotelSearch(token='<TOKEN>', debug=True)
     instance.basic_destination_search(destination='Place:Istanbul',
                                       session_id='1235',
-                                      languaceCode='TR', room=1)
+                                      language_code='TR', room=1)
 
 
 ## Multible Hotel Search Results Summary
@@ -72,7 +72,7 @@ or via sources:
     instance = HotelSearch(token='<TOKEN>', debug=True)
     instance.destination_search_summary(destination='Place:Istanbul',
                                         session_id='1235',
-                                        languaceCode='TR', room=1)
+                                        language_code='TR', room=1)
 
 ## Single Hotel Search
 
@@ -80,7 +80,7 @@ or via sources:
 
     instance = HotelSearch(token='<TOKEN>', debug=True)
     instance.single_search(hotel='hotel:Hotel_Sapphire_Istanbul',
-                           session_id='1235', languaceCode='TR', room=1)
+                           session_id='1235', language_code='TR', room=1)
 
 
 ## HTTP Response Codes
