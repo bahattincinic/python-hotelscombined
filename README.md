@@ -12,7 +12,7 @@ using pip
 
 or via sources:
 
-    $ wget https://github.com/metglobal/python-hotelscombined/archive/python-hotelscombined-xxx.zip
+    $ wget https://github.com/bahattincinic/python-hotelscombined/archive/python-hotelscombined-xxx.zip
     $ unzip python-hotelscombined-xxx.zip
     $ cd python-hotelscombined-xxx
     $ python setup.py install
