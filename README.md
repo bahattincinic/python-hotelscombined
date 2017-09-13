@@ -22,7 +22,7 @@ or via sources:
 
 * Static Search
 * Autocomplete Search
-* Multible Hotel Search
+* Multiple Hotel Search
 * Single Hotel Search
 
 
@@ -47,7 +47,7 @@ or via sources:
     instance = StaticSearch(token='<TOKEN>', debug=True)
     instance.search(query='istanbul eresin')
 
-## Multible Hotel Search
+## Multiple Hotel Search
 
     from hotels_combined.hotel import HotelSearch
 
@@ -55,7 +55,7 @@ or via sources:
     instance.destination_search(destination='Place:Istanbul', session_id='1235',
                                 language_code='TR', room=1)
 
-## Basic Multible Hotel Search
+## Basic Multiple Hotel Search
 
     from hotels_combined.hotel import HotelSearch
 
@@ -65,7 +65,7 @@ or via sources:
                                       language_code='TR', room=1)
 
 
-## Multible Hotel Search Results Summary
+## Multiple Hotel Search Results Summary
 
     from hotels_combined.hotel import HotelSearch
 
